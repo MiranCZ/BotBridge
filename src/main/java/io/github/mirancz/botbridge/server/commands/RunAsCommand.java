@@ -5,7 +5,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import io.github.mirancz.botbridge.api.AbstractBot;
-import io.github.mirancz.botbridge.api.control.command.BotBridgeCommandSource;
+import io.github.mirancz.botbridge.api.control.command.brigadier.BotBridgeCommandSource;
 import io.github.mirancz.botbridge.api.lifecycle.BotManager;
 import io.github.mirancz.botbridge.api.util.Side;
 import io.github.mirancz.botbridge.server.bridge.ServerCommandSourceBridge;

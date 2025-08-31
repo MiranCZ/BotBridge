@@ -1,7 +1,7 @@
 package io.github.mirancz.botbridge.server.impl;
 
 import io.github.mirancz.botbridge.api.AbstractBot;
-import io.github.mirancz.botbridge.api.control.command.BotBridgeCommandSource;
+import io.github.mirancz.botbridge.api.control.command.brigadier.BotBridgeCommandSource;
 import net.minecraft.command.ReturnValueConsumer;
 import net.minecraft.command.argument.EntityAnchorArgumentType;
 import net.minecraft.entity.Entity;

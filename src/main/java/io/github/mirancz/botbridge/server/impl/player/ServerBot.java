@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import io.github.mirancz.botbridge.api.input.AbstractInput;
 import io.github.mirancz.botbridge.api.AbstractBot;
 import io.github.mirancz.botbridge.api.AbstractWorld;
+import io.github.mirancz.botbridge.api.lifecycle.BotManager;
 import io.github.mirancz.botbridge.server.impl.input.ServerInput;
 import io.github.mirancz.botbridge.server.impl.ServerWorldImpl;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,7 +25,8 @@ public class ServerBot extends AbstractBot {
     private final ServerInput input;
     private final ServerWorldImpl world;
 
-    public ServerBot(MinecraftServer server, ServerWorld world, Vec3d pos, String name) {
+    public ServerBot(BotManager manager, MinecraftServer server, ServerWorld world, Vec3d pos, String name) {
+        super(manager);
         GameProfile profile = new GameProfile(UUID.randomUUID(), name);
         mcPlayer = new CustomServerPlayerEntity(server, world, profile, this::tick);
         mcPlayer.setPosition(pos);
@@ -32,13 +34,6 @@ public class ServerBot extends AbstractBot {
         this.input = new ServerInput(mcPlayer);
         this.world = new ServerWorldImpl(world);
 
-    }
-
-    @Override
-    public void taskEnd() {
-        super.taskEnd();
-
-        input.freeControl();
     }
 
     @Override

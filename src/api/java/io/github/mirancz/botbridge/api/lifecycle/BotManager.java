@@ -2,12 +2,12 @@ package io.github.mirancz.botbridge.api.lifecycle;
 
 import com.mojang.brigadier.CommandDispatcher;
 import io.github.mirancz.botbridge.api.AbstractBot;
-import io.github.mirancz.botbridge.api.control.ChatCommandListener;
+import io.github.mirancz.botbridge.api.control.command.chat.ChatCommandListener;
 import io.github.mirancz.botbridge.api.control.Task;
-import io.github.mirancz.botbridge.api.control.command.BotBridgeCommandSource;
-import io.github.mirancz.botbridge.api.control.command.CommandRegister;
+import io.github.mirancz.botbridge.api.control.command.brigadier.BotBridgeCommandSource;
+import io.github.mirancz.botbridge.api.control.command.brigadier.CommandRegister;
 import io.github.mirancz.botbridge.api.util.Side;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.entity.player.PlayerEntity;
 
 import java.util.*;
 
@@ -28,7 +28,7 @@ public class BotManager {
     private static final List<BotFactory> factories = new ArrayList<>();
     private static final Map<String, AbstractBot> bots = new HashMap<>();
 
-    public static boolean isBot(ServerPlayerEntity player) {
+    public static boolean isBot(PlayerEntity player) {
         AbstractBot abstractBot = getBot(player);
         if (abstractBot == null) return false;
 
@@ -39,7 +39,7 @@ public class BotManager {
         return instanceMap.get(side);
     }
 
-    public static AbstractBot getBot(ServerPlayerEntity entity) {
+    public static AbstractBot getBot(PlayerEntity entity) {
         return bots.get(entity.getGameProfile().getName());
     }
 
@@ -86,28 +86,24 @@ public class BotManager {
     }
 
 
-    private final CommandHandler handler;
+    private final ChatCommandHandler handler;
     private final Map<AbstractBot, Task> tasks = new HashMap<>();
 
 
     private BotManager() {
-        this.handler = new CommandHandler(this);
+        this.handler = new ChatCommandHandler(this);
     }
-
-
-    public CommandHandler getCommandHandler() {
-        return handler;
-    }
-
 
     public void executeTask(Task task, AbstractBot player) {
         if (tasks.containsKey(player)) {
             tasks.get(player).stop();
-            player.taskEnd();
         }
 
         tasks.put(player, task);
-        player.taskStart();
+    }
+
+    public boolean isTaskRunningFor(AbstractBot bot) {
+        return tasks.containsKey(bot);
     }
 
     public void onCreated(AbstractBot player) {

@@ -61,6 +61,8 @@ public abstract class AbstractInput {
 
     protected abstract void updateYaw(float yaw);
 
+    public abstract void freeControl();
+
     public void reset() {
         forward = false;
         back = false;

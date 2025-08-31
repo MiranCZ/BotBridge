@@ -3,6 +3,8 @@ package io.github.mirancz.botbridge.client.impl;
 import io.github.mirancz.botbridge.api.AbstractBot;
 import io.github.mirancz.botbridge.api.AbstractWorld;
 import io.github.mirancz.botbridge.api.input.AbstractInput;
+import io.github.mirancz.botbridge.api.lifecycle.BotManager;
+import io.github.mirancz.botbridge.client.BotBridgeClient;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,25 +15,29 @@ import net.minecraft.entity.player.PlayerEntity;
  */
 public class ClientBot extends AbstractBot {
 
-    public static ClientBot INSTANCE = new ClientBot();
+    public static ClientBot INSTANCE;
+    private static boolean initialized = false;
+
+    public static void init(BotManager manager) {
+        if (initialized) {
+            throw new IllegalStateException("Already initialized!");
+        }
+
+        INSTANCE = new ClientBot(manager);
+
+        initialized = true;
+    }
 
 
     private final ClientWorldImpl clientWorld;
     private final ClientInput input;
 
-    private ClientBot() {
+    private ClientBot(BotManager botManager) {
+        super(botManager);
         this.clientWorld = new ClientWorldImpl();
         this.input = new ClientInput();
 
         ClientTickEvents.START_CLIENT_TICK.register(a -> tick());
-    }
-
-
-    @Override
-    public void taskEnd() {
-        super.taskEnd();
-
-        input.freeControl();
     }
 
     @Override

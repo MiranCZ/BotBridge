@@ -1,23 +1,30 @@
 package io.github.mirancz.botbridge.api;
 
+import io.github.mirancz.botbridge.api.control.Task;
 import io.github.mirancz.botbridge.api.input.AbstractInput;
+import io.github.mirancz.botbridge.api.lifecycle.BotManager;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 
 public abstract class AbstractBot {
 
-    protected boolean runningTask = false;
+    private final BotManager manager;
+
+    protected AbstractBot(BotManager manager) {
+        this.manager = manager;
+    }
+
+    public final boolean runTask(Task task) {
+        manager.executeTask(task, this);
+        return true;
+    }
 
     public String getProfileName() {
         return getPlayer().getGameProfile().getName();
     }
 
-    public void taskStart() {
-        runningTask = true;
-    }
-
     public void taskEnd() {
-        runningTask = false;
+        getInput().freeControl();
     }
 
     public boolean isOf(PlayerEntity player) {
@@ -25,8 +32,7 @@ public abstract class AbstractBot {
     }
 
     protected void tick() {
-        if (!runningTask) return;
-
+        if (!manager.isTaskRunningFor(this)) return;
 
         PlayerEntity player = getPlayer();
         if (player == null) {

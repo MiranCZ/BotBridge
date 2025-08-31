@@ -2,7 +2,7 @@ package io.github.mirancz.botbridge.client.mixin;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.StringReader;
-import io.github.mirancz.botbridge.api.control.command.BotBridgeCommandSource;
+import io.github.mirancz.botbridge.api.control.command.brigadier.BotBridgeCommandSource;
 import io.github.mirancz.botbridge.api.lifecycle.BotManager;
 import io.github.mirancz.botbridge.api.util.Side;
 import net.minecraft.client.gui.screen.ChatInputSuggestor;

@@ -1,7 +1,7 @@
 package io.github.mirancz.botbridge.client.impl;
 
 import io.github.mirancz.botbridge.api.AbstractBot;
-import io.github.mirancz.botbridge.api.control.command.BotBridgeCommandSource;
+import io.github.mirancz.botbridge.api.control.command.brigadier.BotBridgeCommandSource;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientCommandSource;
 

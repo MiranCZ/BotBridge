@@ -13,6 +13,8 @@ public class BotBridgeClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        ClientBot.init(botManager);
+
         ClientTickEvents.START_CLIENT_TICK.register(a -> botManager.tick());
 
         ClientPlayConnectionEvents.JOIN.register((a, b, c) -> {

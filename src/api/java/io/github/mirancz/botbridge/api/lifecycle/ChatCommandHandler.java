@@ -1,18 +1,18 @@
 package io.github.mirancz.botbridge.api.lifecycle;
 
 import io.github.mirancz.botbridge.api.AbstractBot;
-import io.github.mirancz.botbridge.api.control.ChatCommandListener;
+import io.github.mirancz.botbridge.api.control.command.chat.ChatCommandListener;
 import io.github.mirancz.botbridge.api.control.Task;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommandHandler {
+public class ChatCommandHandler {
 
     private final List<ChatCommandListener> consumers = new ArrayList<>();
     private final BotManager botManager;
 
-    public CommandHandler(BotManager botManager) {
+    public ChatCommandHandler(BotManager botManager) {
         this.botManager = botManager;
     }
 
@@ -21,25 +21,19 @@ public class CommandHandler {
     }
 
     public boolean onCommand(String message, AbstractBot player) {
-        Task finalTask = null;
-
+        boolean anySuccess = false;
         for (ChatCommandListener consumer : consumers) {
-            Task t = consumer.onCommand(message, player);
-            if (t == null) continue;
+            boolean success = consumer.onCommand(message, player);
 
 
-            if (finalTask == null) finalTask = t;
-            else {
+            if (success && anySuccess) {
                 // TODO better checking
                 System.out.println("Multiple command consumers register the same command!");
             }
+            anySuccess |= success;
         }
 
-        if (finalTask != null) {
-            botManager.executeTask(finalTask, player);
-            return true;
-        }
-        return false;
+        return anySuccess;
     }
 
 }
