@@ -63,7 +63,7 @@ public class BotBridge implements ModInitializer {
                     @Override
                     public boolean onCommand(String message, AbstractBot bot) {
                         if (message.equals("#test")) {
-                            return bot.runTask(new Task(bot, this) {
+                            return bot.runTask(new Task(bot) {
                                 @Override
                                 public void tick() {
                                     player.getInput().jump = true;
@@ -71,7 +71,7 @@ public class BotBridge implements ModInitializer {
                             });
                         }
                         if (message.equals("#stop")) {
-                            return Task.stop(bot, this);
+                            return Task.stop(bot);
                         }
 
                         return false;

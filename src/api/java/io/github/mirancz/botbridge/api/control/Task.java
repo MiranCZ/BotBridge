@@ -1,12 +1,11 @@
 package io.github.mirancz.botbridge.api.control;
 
 import io.github.mirancz.botbridge.api.AbstractBot;
-import io.github.mirancz.botbridge.api.control.command.chat.ChatCommandListener;
 
 public abstract class Task {
 
-    public static boolean stop(AbstractBot player, ChatCommandListener owner) {
-        player.runTask(new Task(player, owner) {
+    public static boolean stop(AbstractBot player) {
+        player.runTask(new Task(player) {
             @Override
             public void tick() {
             }
@@ -21,11 +20,9 @@ public abstract class Task {
     }
 
     protected final AbstractBot player;
-    public final ChatCommandListener owner;
 
-    public Task(AbstractBot player, ChatCommandListener owner) {
+    public Task(AbstractBot player) {
         this.player = player;
-        this.owner = owner;
     }
 
     public abstract void tick();
