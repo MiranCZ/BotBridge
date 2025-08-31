@@ -1,7 +1,7 @@
 package io.github.mirancz.botbridge.api.lifecycle;
 
 import com.mojang.brigadier.CommandDispatcher;
-import io.github.mirancz.botbridge.api.AbstractPlayer;
+import io.github.mirancz.botbridge.api.AbstractBot;
 import io.github.mirancz.botbridge.api.control.ChatCommandListener;
 import io.github.mirancz.botbridge.api.control.Task;
 import io.github.mirancz.botbridge.api.control.command.BotBridgeCommandSource;
@@ -26,20 +26,20 @@ public class BotManager {
 
     private static final Map<Side, Map<Character, CommandDispatcher<BotBridgeCommandSource>>> dispatchers = new HashMap<>();
     private static final List<BotFactory> factories = new ArrayList<>();
-    private static final Map<String, AbstractPlayer> bots = new HashMap<>();
+    private static final Map<String, AbstractBot> bots = new HashMap<>();
 
     public static boolean isBot(ServerPlayerEntity player) {
-        AbstractPlayer abstractPlayer = getBot(player);
-        if (abstractPlayer == null) return false;
+        AbstractBot abstractBot = getBot(player);
+        if (abstractBot == null) return false;
 
-        return abstractPlayer.isOf(player);
+        return abstractBot.isOf(player);
     }
 
     public static BotManager getFor(Side side) {
         return instanceMap.get(side);
     }
 
-    public static AbstractPlayer getBot(ServerPlayerEntity entity) {
+    public static AbstractBot getBot(ServerPlayerEntity entity) {
         return bots.get(entity.getGameProfile().getName());
     }
 
@@ -81,13 +81,13 @@ public class BotManager {
         register.register(dispatcher);
     }
 
-    public static boolean onCommand(Side side, String str, AbstractPlayer player) {
+    public static boolean onCommand(Side side, String str, AbstractBot player) {
         return instanceMap.get(side).handler.onCommand(str, player);
     }
 
 
     private final CommandHandler handler;
-    private final Map<AbstractPlayer, Task> tasks = new HashMap<>();
+    private final Map<AbstractBot, Task> tasks = new HashMap<>();
 
 
     private BotManager() {
@@ -100,7 +100,7 @@ public class BotManager {
     }
 
 
-    public void executeTask(Task task, AbstractPlayer player) {
+    public void executeTask(Task task, AbstractBot player) {
         if (tasks.containsKey(player)) {
             tasks.get(player).stop();
             player.taskEnd();
@@ -110,7 +110,7 @@ public class BotManager {
         player.taskStart();
     }
 
-    public void onCreated(AbstractPlayer player) {
+    public void onCreated(AbstractBot player) {
         for (BotFactory factory : factories) {
             factory.onCreated(player);
         }
@@ -118,7 +118,7 @@ public class BotManager {
         bots.put(player.getProfileName(), player);
     }
 
-    public void onDestroyed(AbstractPlayer player) {
+    public void onDestroyed(AbstractBot player) {
         if (tasks.containsKey(player)) {
             tasks.remove(player).stop();
         }
@@ -136,9 +136,9 @@ public class BotManager {
     }*/
 
     public void tick() {
-        List<AbstractPlayer> toRemove = new ArrayList<>();
+        List<AbstractBot> toRemove = new ArrayList<>();
 
-        for (Map.Entry<AbstractPlayer, Task> entry : tasks.entrySet()) {
+        for (Map.Entry<AbstractBot, Task> entry : tasks.entrySet()) {
             Task task = entry.getValue();
 
             task.tick();
@@ -148,7 +148,7 @@ public class BotManager {
             }
         }
 
-        for (AbstractPlayer player : toRemove) {
+        for (AbstractBot player : toRemove) {
             tasks.remove(player).stop();
         }
     }

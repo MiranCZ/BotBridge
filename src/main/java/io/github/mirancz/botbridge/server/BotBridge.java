@@ -1,7 +1,7 @@
 package io.github.mirancz.botbridge.server;
 
 import com.mojang.brigadier.CommandDispatcher;
-import io.github.mirancz.botbridge.api.AbstractPlayer;
+import io.github.mirancz.botbridge.api.AbstractBot;
 import io.github.mirancz.botbridge.api.control.ChatCommandListener;
 import io.github.mirancz.botbridge.api.control.Task;
 import io.github.mirancz.botbridge.api.control.command.BotBridgeCommandSource;
@@ -11,7 +11,7 @@ import io.github.mirancz.botbridge.api.lifecycle.BotFactory;
 import io.github.mirancz.botbridge.api.lifecycle.BotManager;
 import io.github.mirancz.botbridge.api.util.Side;
 import io.github.mirancz.botbridge.server.commands.RunAsCommand;
-import io.github.mirancz.botbridge.server.impl.player.ServerPlayer;
+import io.github.mirancz.botbridge.server.impl.player.ServerBot;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -43,7 +43,7 @@ public class BotBridge implements ModInitializer {
 
                 MinecraftServer server = sender.server;
                 Vec3d pos = sender.getPos().add(0,2,0);
-                ServerPlayer player = new ServerPlayer(server, server.getOverworld(), pos, "bot"+i);
+                ServerBot player = new ServerBot(server, server.getOverworld(), pos, "bot"+i);
                 // TODO call onDestroyed at some point
                 botManager.onCreated(player);
                 i++;
@@ -62,7 +62,7 @@ public class BotBridge implements ModInitializer {
             public ChatCommandListener registerChatCommands() {
                 return new ChatCommandListener() {
                     @Override
-                    public @Nullable Task onCommand(String message, AbstractPlayer player) {
+                    public @Nullable Task onCommand(String message, AbstractBot player) {
                         if (message.equals("#test")) {
                             return new Task(player, this) {
                                 @Override

@@ -1,38 +1,24 @@
 package io.github.mirancz.botbridge.server.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.Message;
-import com.mojang.brigadier.StringReader;
-import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
-import com.mojang.brigadier.suggestion.Suggestions;
-import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import io.github.mirancz.botbridge.api.AbstractPlayer;
+import io.github.mirancz.botbridge.api.AbstractBot;
 import io.github.mirancz.botbridge.api.control.command.BotBridgeCommandSource;
 import io.github.mirancz.botbridge.api.lifecycle.BotManager;
 import io.github.mirancz.botbridge.api.util.Side;
 import io.github.mirancz.botbridge.server.bridge.ServerCommandSourceBridge;
 import io.github.mirancz.botbridge.server.impl.ServerBotCommandSource;
-import io.github.mirancz.botbridge.server.mixin.ServerPlayerEntityMixin;
-import net.fabricmc.fabric.api.command.v2.ArgumentTypeRegistry;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.command.CommandSource;
 import net.minecraft.command.EntitySelector;
-import net.minecraft.command.argument.BlockPosArgumentType;
 import net.minecraft.command.argument.EntityArgumentType;
-import net.minecraft.command.argument.serialize.ConstantArgumentSerializer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.*;
 import net.minecraft.util.Colors;
-import net.minecraft.util.Identifier;
-
-import java.util.concurrent.CompletableFuture;
 
 import static net.minecraft.server.command.CommandManager.literal;
 import static net.minecraft.server.command.CommandManager.argument;
@@ -52,7 +38,7 @@ public class RunAsCommand implements CommandRegistrationCallback {
                 throw new SimpleCommandExceptionType(Text.of("Player '").copy().append(entity.getName()).append("' is not a bot!")).create();
             }
 
-            AbstractPlayer bot = BotManager.getBot(entity);
+            AbstractBot bot = BotManager.getBot(entity);
             String command = s.getArgument("command", String.class);
             if (command.isEmpty()) {
                 throw new SimpleCommandExceptionType(Text.of("Command is empty")).create();

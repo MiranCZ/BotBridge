@@ -1,6 +1,6 @@
 package io.github.mirancz.botbridge.server.mixin;
 
-import io.github.mirancz.botbridge.api.AbstractPlayer;
+import io.github.mirancz.botbridge.api.AbstractBot;
 import io.github.mirancz.botbridge.server.bridge.ServerCommandSourceBridge;
 import io.github.mirancz.botbridge.server.impl.ServerBotCommandSource;
 import net.minecraft.command.ReturnValueConsumer;
@@ -79,7 +79,7 @@ public class ServerCommandSourceMixin implements ServerCommandSourceBridge {
     private FutureQueue messageChainTaskQueue;
 
     @Override
-    public ServerBotCommandSource botBridge$from(AbstractPlayer bot) {
+    public ServerBotCommandSource botBridge$from(AbstractBot bot) {
         return new ServerBotCommandSource(bot,
                 output,position, rotation, world, level, name, displayName, server, entity, silent,
                 returnValueConsumer, entityAnchor, signedArguments, messageChainTaskQueue

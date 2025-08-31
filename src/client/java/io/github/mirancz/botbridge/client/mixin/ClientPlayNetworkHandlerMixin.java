@@ -4,7 +4,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.mirancz.botbridge.api.lifecycle.BotManager;
 import io.github.mirancz.botbridge.api.util.Side;
 import io.github.mirancz.botbridge.client.impl.ClientBotCommandSource;
-import io.github.mirancz.botbridge.client.impl.ClientPlayer;
+import io.github.mirancz.botbridge.client.impl.ClientBot;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -22,7 +22,7 @@ public class ClientPlayNetworkHandlerMixin {
             cancellable = true
     )
     private void sendChatMessage(String string, CallbackInfo ci) {
-        boolean success = BotManager.onCommand(Side.CLIENT, string, ClientPlayer.INSTANCE);
+        boolean success = BotManager.onCommand(Side.CLIENT, string, ClientBot.INSTANCE);
 
         if (success) {
             ci.cancel();
@@ -51,7 +51,7 @@ public class ClientPlayNetworkHandlerMixin {
         var dispatcher = BotManager.getDispatcher(Side.CLIENT, ch);
         if (dispatcher != null) {
             try {
-                dispatcher.execute(string.substring(1), new ClientBotCommandSource(ClientPlayer.INSTANCE));
+                dispatcher.execute(string.substring(1), new ClientBotCommandSource(ClientBot.INSTANCE));
             } catch (CommandSyntaxException e) {
                 e.printStackTrace(); //FIXME do some other way
             }

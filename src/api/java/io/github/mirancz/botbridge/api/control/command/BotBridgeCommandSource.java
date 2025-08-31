@@ -1,11 +1,11 @@
 package io.github.mirancz.botbridge.api.control.command;
 
-import io.github.mirancz.botbridge.api.AbstractPlayer;
+import io.github.mirancz.botbridge.api.AbstractBot;
 import net.minecraft.command.CommandSource;
 
 public interface BotBridgeCommandSource extends CommandSource {
 
 
-    AbstractPlayer getBotPlayer();
+    AbstractBot getBotPlayer();
 
 }

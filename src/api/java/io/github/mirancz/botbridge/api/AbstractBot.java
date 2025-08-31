@@ -3,33 +3,13 @@ package io.github.mirancz.botbridge.api;
 import io.github.mirancz.botbridge.api.input.AbstractInput;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
 
-public abstract class AbstractPlayer {
+public abstract class AbstractBot {
 
     protected boolean runningTask = false;
 
-    public double getX() {
-        return getMcPlayer().getX();
-    }
-    public double getY() {
-        return getMcPlayer().getY();
-    }
-    public double getZ() {
-        return getMcPlayer().getZ();
-    }
-    public BlockPos getBlockPos() {
-        return getMcPlayer().getBlockPos();
-    }
-    public float getPitch() {
-        return getMcPlayer().getPitch();
-    }
-    public float getYaw() {
-        return getMcPlayer().getYaw();
-    }
     public String getProfileName() {
-        return getMcPlayer().getGameProfile().getName();
+        return getPlayer().getGameProfile().getName();
     }
 
     public void taskStart() {
@@ -41,14 +21,14 @@ public abstract class AbstractPlayer {
     }
 
     public boolean isOf(PlayerEntity player) {
-        return getMcPlayer() == player;
+        return getPlayer() == player;
     }
 
     protected void tick() {
         if (!runningTask) return;
 
 
-        PlayerEntity player = getMcPlayer();
+        PlayerEntity player = getPlayer();
         if (player == null) {
             return; //FIXME is this fine?
         }
@@ -63,5 +43,5 @@ public abstract class AbstractPlayer {
 
     public abstract AbstractInput getInput();
 
-    protected abstract PlayerEntity getMcPlayer();
+    public abstract PlayerEntity getPlayer();
 }

@@ -1,10 +1,10 @@
 package io.github.mirancz.botbridge.api.control;
 
-import io.github.mirancz.botbridge.api.AbstractPlayer;
+import io.github.mirancz.botbridge.api.AbstractBot;
 
 public abstract class Task {
 
-    public static Task noop(AbstractPlayer player, ChatCommandListener owner) {
+    public static Task noop(AbstractBot player, ChatCommandListener owner) {
         return new Task(player, owner) {
             @Override
             public void tick() {
@@ -17,10 +17,10 @@ public abstract class Task {
         };
     }
 
-    protected final AbstractPlayer player;
+    protected final AbstractBot player;
     public final ChatCommandListener owner;
 
-    public Task(AbstractPlayer player, ChatCommandListener owner) {
+    public Task(AbstractBot player, ChatCommandListener owner) {
         this.player = player;
         this.owner = owner;
 

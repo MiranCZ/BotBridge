@@ -2,7 +2,7 @@ package io.github.mirancz.botbridge.client;
 
 import io.github.mirancz.botbridge.api.lifecycle.BotManager;
 import io.github.mirancz.botbridge.api.util.Side;
-import io.github.mirancz.botbridge.client.impl.ClientPlayer;
+import io.github.mirancz.botbridge.client.impl.ClientBot;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -16,12 +16,12 @@ public class BotBridgeClient implements ClientModInitializer {
         ClientTickEvents.START_CLIENT_TICK.register(a -> botManager.tick());
 
         ClientPlayConnectionEvents.JOIN.register((a, b, c) -> {
-            botManager.onCreated(ClientPlayer.INSTANCE);
+            botManager.onCreated(ClientBot.INSTANCE);
         });
 
 
         ClientPlayConnectionEvents.DISCONNECT.register((a, b) -> {
-            botManager.onDestroyed(ClientPlayer.INSTANCE);
+            botManager.onDestroyed(ClientBot.INSTANCE);
         });
     }
 
