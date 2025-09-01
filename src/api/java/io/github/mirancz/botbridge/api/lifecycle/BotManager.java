@@ -106,6 +106,10 @@ public class BotManager {
         return tasks.containsKey(bot);
     }
 
+    public Task getPlayerTask(AbstractBot player) {
+        return tasks.get(player);
+    }
+
     public void onCreated(AbstractBot player) {
         for (BotFactory factory : factories) {
             factory.onCreated(player);

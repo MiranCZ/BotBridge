@@ -23,8 +23,13 @@ public class ChatCommandHandler {
     public boolean onCommand(String message, AbstractBot player) {
         boolean anySuccess = false;
         for (ChatCommandListener consumer : consumers) {
+            Task task = botManager.getPlayerTask(player);
             boolean success = consumer.onCommand(message, player);
 
+            // simple guard-rail check
+            if (!success && (task != botManager.getPlayerTask(player))) {
+                throw new IllegalStateException("Changed task without returning 'true'!");
+            }
 
             if (success && anySuccess) {
                 // TODO better checking
