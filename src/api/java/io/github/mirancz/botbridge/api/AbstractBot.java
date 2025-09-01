@@ -5,6 +5,7 @@ import io.github.mirancz.botbridge.api.input.AbstractInput;
 import io.github.mirancz.botbridge.api.lifecycle.BotManager;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.World;
 
 public abstract class AbstractBot {
 
@@ -45,7 +46,12 @@ public abstract class AbstractBot {
         input.reset();
     }
 
-    public abstract AbstractWorld getWorld();
+    public World getWorld() {
+        PlayerEntity player = getPlayer();
+        if (player == null) return null;
+
+        return player.getWorld();
+    }
 
     public abstract AbstractInput getInput();
 
