@@ -13,22 +13,23 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ConnectedClientData;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
 import net.minecraft.util.Arm;
 import net.minecraft.util.math.BlockPos;
 
 public class CustomServerPlayerEntity extends ServerPlayerEntity {
 
     protected static final SyncedClientOptions DUMMY_CLIENT_OPTIONS =  new SyncedClientOptions("", 5, ChatVisibility.FULL, true, 1, Arm.RIGHT, false, false);
-    private final Runnable onTick;
+    private final ServerBot bot;
     private final SyncedClientOptions clientOptions;
 
-    public CustomServerPlayerEntity(MinecraftServer server, ServerWorld world, GameProfile profile, Runnable onTick) {
-        this(server, world, profile, onTick, DUMMY_CLIENT_OPTIONS);
+    public CustomServerPlayerEntity(MinecraftServer server, ServerWorld world, GameProfile profile, ServerBot bot) {
+        this(server, world, profile, bot, DUMMY_CLIENT_OPTIONS);
     }
 
-    public CustomServerPlayerEntity(MinecraftServer server, ServerWorld world, GameProfile profile,Runnable onTick ,SyncedClientOptions clientOptions) {
+    public CustomServerPlayerEntity(MinecraftServer server, ServerWorld world, GameProfile profile, ServerBot bot, SyncedClientOptions clientOptions) {
         super(server, world, profile, clientOptions);
-        this.onTick = onTick;
+        this.bot = bot;
         this.clientOptions = clientOptions;
 
         this.spawn();
@@ -39,7 +40,21 @@ public class CustomServerPlayerEntity extends ServerPlayerEntity {
         super.playerTick();
         super.tick();
 
-        this.onTick.run();
+        this.bot.tick();
+    }
+
+    @Override
+    public void sendMessage(Text message) {
+        super.sendMessage(message);
+
+        bot.getSidebar().addLine(message);
+    }
+
+    @Override
+    public void sendMessage(Text message, boolean overlay) {
+        super.sendMessage(message, overlay);
+
+        bot.getSidebar().addLine(message);
     }
 
     @Override

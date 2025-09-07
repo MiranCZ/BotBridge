@@ -43,6 +43,8 @@ public class BotBridge implements ModInitializer {
                 MinecraftServer server = sender.server;
                 Vec3d pos = sender.getPos().add(0,2,0);
                 ServerBot player = new ServerBot(botManager, server, server.getOverworld(), pos, "bot"+i);
+
+                player.getSidebar().add(sender);
                 // TODO call onDestroyed at some point
                 botManager.onCreated(player);
                 i++;

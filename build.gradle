@@ -65,6 +65,8 @@ repositories {
     // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html
     // for more information about repositories.
+
+    maven { url 'https://maven.nucleoid.xyz' }
 }
 
 dependencies {
@@ -74,6 +76,11 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    // TODO #1 sidebar-api doesn't seem to support versions past 1.21.1 which might be a problem in the future
+    // also generally should keep dependencies as low as possible
+    // TODO #2 shadow the dependency
+    modImplementation include("eu.pb4:sidebar-api:0.5.1+1.21.1")
 }
 
 remapJar {

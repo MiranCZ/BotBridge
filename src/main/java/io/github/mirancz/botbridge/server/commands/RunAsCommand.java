@@ -1,15 +1,16 @@
 package io.github.mirancz.botbridge.server.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
-import io.github.mirancz.botbridge.api.AbstractBot;
 import io.github.mirancz.botbridge.api.control.command.brigadier.BotBridgeCommandSource;
 import io.github.mirancz.botbridge.api.lifecycle.BotManager;
 import io.github.mirancz.botbridge.api.util.Side;
 import io.github.mirancz.botbridge.server.bridge.ServerCommandSourceBridge;
 import io.github.mirancz.botbridge.server.impl.ServerBotCommandSource;
+import io.github.mirancz.botbridge.server.impl.player.ServerBot;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.EntitySelector;
@@ -38,7 +39,7 @@ public class RunAsCommand implements CommandRegistrationCallback {
                 throw new SimpleCommandExceptionType(Text.of("Player '").copy().append(entity.getName()).append("' is not a bot!")).create();
             }
 
-            AbstractBot bot = BotManager.getBot(entity);
+            ServerBot bot = (ServerBot) BotManager.getBot(entity);
             String command = s.getArgument("command", String.class);
             if (command.isEmpty()) {
                 throw new SimpleCommandExceptionType(Text.of("Command is empty")).create();
@@ -48,8 +49,11 @@ public class RunAsCommand implements CommandRegistrationCallback {
             ServerBotCommandSource botSource = ((ServerCommandSourceBridge) source).botBridge$from(bot);
 
 
+            bot.getSidebar().add(source.getPlayer());
+
             boolean chatSuccess = BotManager.onCommand(Side.SERVER, command, bot);
             if (chatSuccess) {
+                bot.getSidebar().onChatCommand(command, true);
                 source.sendMessage(Text.of("Chat command '"+command+"' was successfully executed").copy().withColor(Colors.GREEN));
                 return 0;
             }
@@ -57,6 +61,9 @@ public class RunAsCommand implements CommandRegistrationCallback {
             char prefix = command.charAt(0);
             CommandDispatcher<BotBridgeCommandSource> customDispatcher = BotManager.getDispatcher(Side.SERVER, prefix);
             if (customDispatcher != null) {
+                ParseResults<BotBridgeCommandSource> parse = customDispatcher.parse(command.substring(1), botSource);
+                bot.getSidebar().onBrigadierCommand(parse, command);
+
                 try {
                     int result = customDispatcher.execute(command.substring(1), botSource);
 
@@ -69,6 +76,8 @@ public class RunAsCommand implements CommandRegistrationCallback {
                     return -1;
                 }
             }
+
+            bot.getSidebar().onChatCommand(command, false);
             source.sendError(Text.of("No commands with prefix of '"+prefix+"' found"));
 
             return -1;
