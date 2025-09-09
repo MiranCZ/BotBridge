@@ -1,6 +1,6 @@
 package io.github.mirancz.botbridge.server.impl;
 
-import io.github.mirancz.botbridge.api.AbstractBot;
+import io.github.mirancz.botbridge.api.Bot;
 import io.github.mirancz.botbridge.api.control.command.brigadier.BotBridgeCommandSource;
 import net.minecraft.command.ReturnValueConsumer;
 import net.minecraft.command.argument.EntityAnchorArgumentType;
@@ -18,16 +18,16 @@ import org.jetbrains.annotations.Nullable;
 
 public class ServerBotCommandSource extends ServerCommandSource implements BotBridgeCommandSource {
 
-    private final AbstractBot bot;
+    private final Bot bot;
 
-    public ServerBotCommandSource(AbstractBot bot, CommandOutput output, Vec3d pos, Vec2f rot, ServerWorld world, int level, String name, Text displayName, MinecraftServer server, @Nullable Entity entity, boolean silent, ReturnValueConsumer resultStorer, EntityAnchorArgumentType.EntityAnchor entityAnchor, SignedCommandArguments signedArguments, FutureQueue messageChainTaskQueue) {
+    public ServerBotCommandSource(Bot bot, CommandOutput output, Vec3d pos, Vec2f rot, ServerWorld world, int level, String name, Text displayName, MinecraftServer server, @Nullable Entity entity, boolean silent, ReturnValueConsumer resultStorer, EntityAnchorArgumentType.EntityAnchor entityAnchor, SignedCommandArguments signedArguments, FutureQueue messageChainTaskQueue) {
         super(output, pos, rot, world, level, name, displayName, server, entity, silent, resultStorer, entityAnchor, signedArguments, messageChainTaskQueue);
         this.bot = bot;
     }
 
 
     @Override
-    public AbstractBot getBotPlayer() {
+    public Bot getBotPlayer() {
         return bot;
     }
 }

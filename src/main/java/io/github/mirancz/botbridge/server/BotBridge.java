@@ -1,7 +1,7 @@
 package io.github.mirancz.botbridge.server;
 
 import com.mojang.brigadier.CommandDispatcher;
-import io.github.mirancz.botbridge.api.AbstractBot;
+import io.github.mirancz.botbridge.api.Bot;
 import io.github.mirancz.botbridge.api.control.command.chat.ChatCommandListener;
 import io.github.mirancz.botbridge.api.control.Task;
 import io.github.mirancz.botbridge.api.control.command.brigadier.BotBridgeCommandSource;
@@ -63,7 +63,7 @@ public class BotBridge implements ModInitializer {
             public ChatCommandListener registerChatCommands() {
                 return new ChatCommandListener() {
                     @Override
-                    public boolean onCommand(String message, AbstractBot bot) {
+                    public boolean onCommand(String message, Bot bot) {
                         if (message.equals("#test")) {
                             return bot.runTask(new Task(bot) {
                                 @Override

@@ -1,12 +1,12 @@
 package io.github.mirancz.botbridge.client.impl;
 
-import io.github.mirancz.botbridge.api.input.AbstractInput;
+import io.github.mirancz.botbridge.api.input.BotInput;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.Input;
 import net.minecraft.client.input.KeyboardInput;
 import net.minecraft.client.network.ClientPlayerEntity;
 
-public class ClientInput extends AbstractInput {
+public class ClientBotInput extends BotInput {
 
 
     private static class ClientInputExecutor extends Input {

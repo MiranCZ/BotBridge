@@ -1,17 +1,17 @@
 package io.github.mirancz.botbridge.api;
 
 import io.github.mirancz.botbridge.api.control.Task;
-import io.github.mirancz.botbridge.api.input.AbstractInput;
+import io.github.mirancz.botbridge.api.input.BotInput;
 import io.github.mirancz.botbridge.api.lifecycle.BotManager;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 
-public abstract class AbstractBot {
+public abstract class Bot {
 
     private final BotManager manager;
 
-    protected AbstractBot(BotManager manager) {
+    protected Bot(BotManager manager) {
         this.manager = manager;
     }
 
@@ -40,7 +40,7 @@ public abstract class AbstractBot {
             return; //FIXME is this fine?
         }
 
-        AbstractInput input = getInput();
+        BotInput input = getInput();
         double movementSpeed = player.getAttributeValue(EntityAttributes.PLAYER_SNEAKING_SPEED);
         input.tick(player.isCrawling() || player.isInSneakingPose(), (float) movementSpeed);
         input.reset();
@@ -53,7 +53,7 @@ public abstract class AbstractBot {
         return player.getWorld();
     }
 
-    public abstract AbstractInput getInput();
+    public abstract BotInput getInput();
 
     public abstract PlayerEntity getPlayer();
 }

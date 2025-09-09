@@ -1,10 +1,10 @@
 package io.github.mirancz.botbridge.api.control;
 
-import io.github.mirancz.botbridge.api.AbstractBot;
+import io.github.mirancz.botbridge.api.Bot;
 
 public abstract class Task {
 
-    public static boolean stop(AbstractBot player) {
+    public static boolean stop(Bot player) {
         player.runTask(new Task(player) {
             @Override
             public void tick() {
@@ -19,9 +19,9 @@ public abstract class Task {
         return true;
     }
 
-    protected final AbstractBot player;
+    protected final Bot player;
 
-    public Task(AbstractBot player) {
+    public Task(Bot player) {
         this.player = player;
     }
 

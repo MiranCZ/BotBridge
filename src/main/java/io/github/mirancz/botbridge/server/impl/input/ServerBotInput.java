@@ -1,14 +1,14 @@
 package io.github.mirancz.botbridge.server.impl.input;
 
-import io.github.mirancz.botbridge.api.input.AbstractInput;
+import io.github.mirancz.botbridge.api.input.BotInput;
 import io.github.mirancz.botbridge.server.impl.player.CustomServerPlayerEntity;
 
-public class ServerInput extends AbstractInput {
+public class ServerBotInput extends BotInput {
 
     private final CustomServerPlayerEntity mcServerPlayer;
     private final MouseInput mouseInput;
 
-    public ServerInput(CustomServerPlayerEntity mcServerPlayer) {
+    public ServerBotInput(CustomServerPlayerEntity mcServerPlayer) {
         this.mcServerPlayer = mcServerPlayer;
         this.mouseInput = new MouseInput(mcServerPlayer);
     }

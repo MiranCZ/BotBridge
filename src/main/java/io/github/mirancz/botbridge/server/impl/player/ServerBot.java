@@ -1,11 +1,11 @@
 package io.github.mirancz.botbridge.server.impl.player;
 
 import com.mojang.authlib.GameProfile;
-import io.github.mirancz.botbridge.api.input.AbstractInput;
-import io.github.mirancz.botbridge.api.AbstractBot;
+import io.github.mirancz.botbridge.api.input.BotInput;
+import io.github.mirancz.botbridge.api.Bot;
 import io.github.mirancz.botbridge.api.lifecycle.BotManager;
 import io.github.mirancz.botbridge.server.commands.sidebar.SidebarManager;
-import io.github.mirancz.botbridge.server.impl.input.ServerInput;
+import io.github.mirancz.botbridge.server.impl.input.ServerBotInput;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
@@ -18,11 +18,11 @@ import java.util.UUID;
 /**
  * Implementation of a server-side controllable player
  */
-public class ServerBot extends AbstractBot {
+public class ServerBot extends Bot {
 
 
     private final CustomServerPlayerEntity mcPlayer;
-    private final ServerInput input;
+    private final ServerBotInput input;
     private final SidebarManager sidebarManager;
 
     public ServerBot(BotManager manager, MinecraftServer server, ServerWorld world, Vec3d pos, String name) {
@@ -31,7 +31,7 @@ public class ServerBot extends AbstractBot {
         mcPlayer = new CustomServerPlayerEntity(server, world, profile, this);
         mcPlayer.setPosition(pos);
 
-        this.input = new ServerInput(mcPlayer);
+        this.input = new ServerBotInput(mcPlayer);
         this.sidebarManager = new SidebarManager(mcPlayer);
 
         // add empty lines
@@ -46,7 +46,7 @@ public class ServerBot extends AbstractBot {
     }
 
     @Override
-    public AbstractInput getInput() {
+    public BotInput getInput() {
         return input;
     }
 

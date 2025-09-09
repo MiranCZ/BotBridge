@@ -1,6 +1,6 @@
 package io.github.mirancz.botbridge.api.lifecycle;
 
-import io.github.mirancz.botbridge.api.AbstractBot;
+import io.github.mirancz.botbridge.api.Bot;
 import io.github.mirancz.botbridge.api.control.command.chat.ChatCommandListener;
 import io.github.mirancz.botbridge.api.control.Task;
 
@@ -20,7 +20,7 @@ public class ChatCommandHandler {
         consumers.add(chatConsumer);
     }
 
-    public boolean onCommand(String message, AbstractBot player) {
+    public boolean onCommand(String message, Bot player) {
         boolean anySuccess = false;
         for (ChatCommandListener consumer : consumers) {
             Task task = botManager.getPlayerTask(player);

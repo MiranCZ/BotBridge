@@ -1,6 +1,6 @@
 package io.github.mirancz.botbridge.api.control.command.chat;
 
-import io.github.mirancz.botbridge.api.AbstractBot;
+import io.github.mirancz.botbridge.api.Bot;
 
 @FunctionalInterface
 public interface ChatCommandListener {
@@ -11,7 +11,7 @@ public interface ChatCommandListener {
      * @param bot The bot this should be executed for
      * @return If running the command was successful
      */
-    boolean onCommand(String message, AbstractBot bot);
+    boolean onCommand(String message, Bot bot);
 
 
 }

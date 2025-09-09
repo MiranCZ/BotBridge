@@ -1,6 +1,6 @@
 package io.github.mirancz.botbridge.api.input;
 
-public abstract class AbstractInput {
+public abstract class BotInput {
 
 
 

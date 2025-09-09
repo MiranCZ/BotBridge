@@ -1,7 +1,7 @@
 package io.github.mirancz.botbridge.client.impl;
 
-import io.github.mirancz.botbridge.api.AbstractBot;
-import io.github.mirancz.botbridge.api.input.AbstractInput;
+import io.github.mirancz.botbridge.api.Bot;
+import io.github.mirancz.botbridge.api.input.BotInput;
 import io.github.mirancz.botbridge.api.lifecycle.BotManager;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
@@ -11,7 +11,7 @@ import net.minecraft.entity.player.PlayerEntity;
  * Functionality for client player is handled through {@link MinecraftClient#getInstance()} calls
  * and its instance should be created only once and reused upon world joining/leaving.
  */
-public class ClientBot extends AbstractBot {
+public class ClientBot extends Bot {
 
     public static ClientBot INSTANCE;
     private static boolean initialized = false;
@@ -28,17 +28,17 @@ public class ClientBot extends AbstractBot {
 
 
 
-    private final ClientInput input;
+    private final ClientBotInput input;
 
     private ClientBot(BotManager botManager) {
         super(botManager);
-        this.input = new ClientInput();
+        this.input = new ClientBotInput();
 
         ClientTickEvents.START_CLIENT_TICK.register(a -> tick());
     }
 
     @Override
-    public AbstractInput getInput() {
+    public BotInput getInput() {
         return input;
     }
 
