@@ -3,6 +3,7 @@ package io.github.mirancz.botbridge.client.impl;
 import io.github.mirancz.botbridge.api.Bot;
 import io.github.mirancz.botbridge.api.input.BotInput;
 import io.github.mirancz.botbridge.api.lifecycle.BotManager;
+import io.github.mirancz.botbridge.client.impl.inventory.ClientInventoryHandler;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
@@ -27,12 +28,13 @@ public class ClientBot extends Bot {
     }
 
 
-
+    private final ClientInventoryHandler inventoryHandler;
     private final ClientBotInput input;
 
     private ClientBot(BotManager botManager) {
         super(botManager);
         this.input = new ClientBotInput();
+        this.inventoryHandler = new ClientInventoryHandler();
 
         ClientTickEvents.START_CLIENT_TICK.register(a -> tick());
     }
@@ -46,4 +48,10 @@ public class ClientBot extends Bot {
     public PlayerEntity getPlayer() {
         return MinecraftClient.getInstance().player;
     }
+
+    @Override
+    public ClientInventoryHandler getInventoryHandler() {
+        return inventoryHandler;
+    }
+
 }

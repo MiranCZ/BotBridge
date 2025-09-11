@@ -2,6 +2,7 @@ package io.github.mirancz.botbridge.api;
 
 import io.github.mirancz.botbridge.api.control.Task;
 import io.github.mirancz.botbridge.api.input.BotInput;
+import io.github.mirancz.botbridge.api.inventory.InventoryHandler;
 import io.github.mirancz.botbridge.api.lifecycle.BotManager;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
@@ -56,4 +57,6 @@ public abstract class Bot {
     public abstract BotInput getInput();
 
     public abstract PlayerEntity getPlayer();
+
+    public abstract InventoryHandler getInventoryHandler();
 }

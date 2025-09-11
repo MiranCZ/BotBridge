@@ -3,8 +3,10 @@ package io.github.mirancz.botbridge.server.impl.player;
 import com.mojang.authlib.GameProfile;
 import io.github.mirancz.botbridge.api.input.BotInput;
 import io.github.mirancz.botbridge.api.Bot;
+import io.github.mirancz.botbridge.api.inventory.InventoryHandler;
 import io.github.mirancz.botbridge.api.lifecycle.BotManager;
 import io.github.mirancz.botbridge.server.commands.sidebar.SidebarManager;
+import io.github.mirancz.botbridge.server.impl.ServerInventoryHandler;
 import io.github.mirancz.botbridge.server.impl.input.ServerBotInput;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
@@ -24,6 +26,7 @@ public class ServerBot extends Bot {
     private final CustomServerPlayerEntity mcPlayer;
     private final ServerBotInput input;
     private final SidebarManager sidebarManager;
+    private final InventoryHandler inventoryHandler;
 
     public ServerBot(BotManager manager, MinecraftServer server, ServerWorld world, Vec3d pos, String name) {
         super(manager);
@@ -31,6 +34,7 @@ public class ServerBot extends Bot {
         mcPlayer = new CustomServerPlayerEntity(server, world, profile, this);
         mcPlayer.setPosition(pos);
 
+        this.inventoryHandler = new ServerInventoryHandler(mcPlayer);
         this.input = new ServerBotInput(mcPlayer);
         this.sidebarManager = new SidebarManager(mcPlayer);
 
@@ -53,6 +57,11 @@ public class ServerBot extends Bot {
     @Override
     public PlayerEntity getPlayer() {
         return mcPlayer;
+    }
+
+    @Override
+    public InventoryHandler getInventoryHandler() {
+        return inventoryHandler;
     }
 
     public SidebarManager getSidebar() {
