@@ -6,23 +6,20 @@ import net.minecraft.screen.slot.SlotActionType;
 
 public abstract class InventoryHandler {
 
-    
+
     public void clickSlot(Slot slot, int button) {
         sendContainerClick(slot, button, SlotActionType.PICKUP);
     }
 
-    
     public void shiftClickSlot(Slot slot) {
         sendContainerClick(slot, 0, SlotActionType.QUICK_MOVE);
     }
 
-    
     public void keyboardClick(Slot selectedSlot, int key) {
         // makes more sense that key number 1 is actually equal to one
         sendContainerClick(selectedSlot, key+1, SlotActionType.SWAP);
     }
 
-    
     public void drop(Slot slot, boolean control) {
         int button = 0;
         if (control) {
@@ -31,18 +28,19 @@ public abstract class InventoryHandler {
         sendContainerClick(slot,button, SlotActionType.THROW);
     }
 
-    
     public void doubleClick(Slot slot) {
         sendContainerClick(slot, 0, SlotActionType.PICKUP_ALL);
     }
 
-    
     public void startMouseDrag(Slot dragFrom, int button) {
-        clickSlot(dragFrom, button);
         sendContainerClick(Slot.none(), ScreenHandler.packQuickCraftData(0, button), SlotActionType.QUICK_CRAFT);
-   }
+    }
 
-    
+    public void startMouseDragWithPickup(Slot dragFrom, int button) {
+        clickSlot(dragFrom, 0);
+        startMouseDrag(dragFrom, button);
+    }
+
     public void addSlotToDrag(Slot slot, int button) {
         sendContainerClick(slot, ScreenHandler.packQuickCraftData(1, button), SlotActionType.QUICK_CRAFT);
    }

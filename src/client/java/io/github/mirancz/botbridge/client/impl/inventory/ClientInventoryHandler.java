@@ -16,13 +16,6 @@ import java.util.function.Consumer;
 
 public class ClientInventoryHandler extends InventoryHandler {
 
-    private final ClientPlayerInteractionManager interactionManager;
-    private final ClientPlayerEntity player;
-
-    public ClientInventoryHandler() {
-        this.interactionManager = MinecraftClient.getInstance().interactionManager;
-        this.player = MinecraftClient.getInstance().player;
-    }
 
     @Override
     public void startMouseDrag(Slot dragFrom, int button) {
@@ -31,7 +24,7 @@ public class ClientInventoryHandler extends InventoryHandler {
         // just rendering client-side stuff
         runOnBridgedHandledScreen(
                 (bridge, handler) ->
-                        bridge.botBridge$startFakeDrag(dragFrom.getIndex(handler))
+                        bridge.botBridge$startFakeDrag(dragFrom.getIndex(handler), button)
         );
     }
 
@@ -75,7 +68,9 @@ public class ClientInventoryHandler extends InventoryHandler {
     @Override
     protected void sendContainerClick(int slotId, int button, SlotActionType actionType) {
         ScreenHandler handler = getScreenHandler();
-        if (handler == null) return;
+        ClientPlayerEntity player = getPlayer();
+        ClientPlayerInteractionManager interactionManager = getInteractionManager();
+        if (handler == null || player == null || interactionManager == null) return;
 
         int syncId = handler.syncId;
 
@@ -84,7 +79,18 @@ public class ClientInventoryHandler extends InventoryHandler {
 
     @Override
     protected ScreenHandler getScreenHandler() {
+        ClientPlayerEntity player = getPlayer();
+        if (player == null) return null;
+
         return player.currentScreenHandler;
+    }
+
+    private ClientPlayerEntity getPlayer() {
+        return MinecraftClient.getInstance().player;
+    }
+
+    private ClientPlayerInteractionManager getInteractionManager() {
+        return MinecraftClient.getInstance().interactionManager;
     }
 
 }
